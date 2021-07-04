@@ -41,3 +41,18 @@ GROUP BY decade_baby;
 /*1. What is the current average salary for each of the following department groups: R&D, 
 Sales & Marketing, Prod & QM, Finance & HR, Customer Service?*/
 
+SELECT 
+	CASE  
+		WHEN dept_no IN ('d009') THEN 'Customer Service'
+		WHEN dept_no IN ('d002', 'd003') THEN 'Finance & HR'
+		WHEN dept_no IN ('d007', 'd001') THEN 'Sales & Marketing'
+		WHEN dept_no IN ('d004', 'd006') THEN 'Prod & QM'
+		WHEN dept_no IN ('d008', 'd005') THEN 'R&D'
+		ELSE 'Other'
+		END AS dept_group,
+		AVG(salary)
+FROM departments
+JOIN dept_emp AS de USING(dept_no)
+JOIN salaries AS s USING(emp_no)
+WHERE s.to_date>curdate()
+GROUP BY dept_group;
